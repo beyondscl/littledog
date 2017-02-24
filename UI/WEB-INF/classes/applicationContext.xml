@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd ">
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=UTF8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="MySQL"/>
+        <!--        <property name="driverClassName" value="com.sybase.jdbc3.jdbc.SybDriver"/>
+        <property name="url" value="jdbc:sybase:Tds:10.189.84.70:5008/eamdb"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>-->
+        <!--<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />-->
+        <!--<property name="url" value="jdbc:oracle:thin:@172.19.34.6:1521:ORCL" />-->
+        <!--<property name="username" value="orclight" />-->
+        <!--<property name="password" value="123456" />-->
+    </bean>
+    <!-- 配置数据源 -->
+    <!-- 导入资源文件 -->
+    <!--<context:property-placeholder location="classpath:db.properties"/>-->
+
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--<property name="user" value="${jdbc.user}"></property>-->
+    <!--<property name="password" value="${jdbc.password}"></property>-->
+    <!--<property name="driverClass" value="${jdbc.driverClass}"></property>-->
+    <!--<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>-->
+    <!--<property name="initialPoolSize" value="${jdbc.initPoolSize}"></property>-->
+    <!--<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>-->
+    <!--</bean>-->
+
+    <!-- 配置Hibernate的SessionFactory，通过spring提供的 LocalSessionFactoryBean配置-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!-- 配置依赖的数据源属性 -->
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- hibernate 配置文件的路径 -->
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+        <!-- 配置hibernate映射文件的路径，可以使用通配符 -->
+        <property name="mappingLocations" value="classpath:com/dog/hbmXml/*.hbm.xml"></property>
+    </bean>
+
+    <!-- 配置 Spring 的声明式事物 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <!-- 配置事务异常封装 -->
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+    <!--注解配置事务-->
+    <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />-->
+    <!--Service注解的类，-->
+    <context:component-scan base-package="com.dog">
+        <!--必须配置-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <!--可以不要这个配置，但是配上，去除多余的扫描-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--  声明配置事务,配置事物属性 ，需要事物管理器-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED"/>
+            <tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED"/>
+            <tx:method name="load*" read-only="true" propagation="NOT_SUPPORTED"/>
+            <!--如果不把save update delete都配置上，-->
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--可能需要，aspectjwwaver.jar,cglib,spring-aspects-4.3.6.RELEASE.jar这几个包-->
+    <!--配置事物切点，并把事物属性和切点关联起来  cod.dog下的任意包，任意以Service结尾的类，任意方法(任意参数)-->
+    <aop:config>
+        <aop:pointcut expression="execution(* com.dog..*Service.*(..))" id="txPointcut"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+    <!--注解形式aop-->
+    <aop:aspectj-autoproxy/>
+
+    <bean id="userHandlerInterceptor" class="com.dog.controller.system.filter.UserHandlerInterceptor"/>
+    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="userHandlerInterceptor"/>
+                <!--
+                                <ref bean="handlerInterceptor2"/>
+                -->
+            </list>
+        </property>
+    </bean>
+</beans>

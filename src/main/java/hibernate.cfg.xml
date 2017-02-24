@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- 配置hibernate基本信息 -->
+        <!-- 1.数据源配置在IOC容器中，此处不需要额外配置 -->
+        <!-- 2.关联的.hbm.xml文件也在IOC容器配置SessionFactory时配置 -->
+        <!-- 3.此处配置hibernate的基本信息：数据库方言、SQL显示及格式化，及生成数据表的策略，二级缓存等 -->
+        <!--<property name="hibernate.dialect">org.hibernate.dialect.SybaseDialect</property>-->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!--数据库连接池的大小-->
+        <property name="hibernate.connection.pool.size">2</property>
+        <!--是否在后台显示Hibernate用到的SQL语句，开发时设置为true，便于差错，程序运行时可以在Eclipse的控制台显示Hibernate的执行Sql语句。项目部署后可以设置为false，提高运行效率-->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!--jdbc.fetch_size是指Hibernate每次从数据库中取出并放到JDBC的Statement中的记录条数。Fetch Size设的越大，读数据库的次数越少，速度越快，Fetch Size越小，读数据库的次数越多，速度越慢-->
+        <property name="jdbc.fetch_size">50</property>
+        <!--jdbc.batch_size是指Hibernate批量插入,删除和更新时每次操作的记录数。Batch Size越大，批量操作的向数据库发送Sql的次数越少，速度就越快，同样耗用内存就越大-->
+        <property name="jdbc.batch_size">20</property>
+        <!--jdbc.use_scrollable_resultset是否允许Hibernate用JDBC的可滚动的结果集。对分页的结果集。对分页时的设置非常有帮助-->
+        <property name="jdbc.use_scrollable_resultset">false</property>
+        <!--connection.useUnicode连接数据库时是否使用Unicode编码-->
+        <property name="Connection.useUnicode">true</property>
+        <!--connection.characterEncoding连接数据库时数据的传输字符集编码方式，最好设置为gbk，用gb2312有的字符不全-->
+        <property name="connection.characterEncoding">UTF-8</property>
+        <!--警告这里很难重要：如果配置成thread那么会出错；前提web.xml必须配置opensessioninview-->
+        <property name="current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</property>
+        <property name="connection.autocommit">false</property>
+        <!--
+不配置有下面一个错误
+2017-02-17 14:15:07,181 WARN  [RMI TCP Connection(3)-127.0.0.1] [org.hibernate.engine.jdbc.internal.JdbcServicesImpl] HHH000341: Could not obtain connection metadata : ASE is now using a multi-byte character set, and the TEXT character counts have not been re-calculated using this character set for table 'spt_jtext'. Use DBCC FIX_TEXT on this table before running the query again.
+
+2017-02-17 14:15:07,203 INFO  [RMI TCP Connection(3)-127.0.0.1] [org.hibernate.engine.jdbc.internal.LobCreatorBuilder] HHH000422: Disabling contextual LOB creation as connection was null
+2017-02-17 14:15:07,208 WARN  [RMI TCP Connection(3)-127.0.0.1] [org.springframework.web.context.support.XmlWebApplicationContext] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionFactory' defined in URL [file:/E:/myeclipseworkspace/NewLearn/littledog/UI/WEB-INF/classes/applicationContext.xml]: Invocation of init method failed; nested exception is java.lang.NullPointerException
+2017-02-17 14:15:07,213 ERROR [RMI TCP Connection(3)-127.0.0.1] [org.springframework.web.context.ContextLoader] Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionFactory' defined in URL [file:/E:/myeclipseworkspace/NewLearn/littledog/UI/WEB-INF/classes/applicationContext.xml]: Invocation of init method failed; nested exception is java.lang.NullPointerException
+            根据Disabling contextual LOB creation as connection was null查询到错误原因
+        -->
+        <property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
+
+    </session-factory>
+</hibernate-configuration>
