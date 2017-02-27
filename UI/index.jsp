@@ -27,11 +27,11 @@
             JS.Engine.on(
                     {
                         // 对应服务端 “频道1” 的值 result1
-                        result1 : function(num1){
-                            number1.innerHTML = num1;
+                        COMMON : function(message){
+                            number1.innerHTML = "这里是公共频道"+message;
                         },
                         // 对应服务端 “频道2” 的值 result2
-                        result2 : function(num2){
+                        PERSON : function(num2){
                             number2.innerHTML = num2;
                         },
                     }
@@ -42,7 +42,9 @@
 <body onload="init()">
 数字1：<span id="number1">...</span><br>
 数字2：<span id="number2">...</span>
-<form action="user/login">
+<form action="user/login" method="post">
+    <input type="text"     name="login" value="">用户名<br>
+    <input type="password" name="password" value="">密码<br>
     <button type="submit" value="login">login</button>
 </form>
 </body>

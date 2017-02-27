@@ -6,25 +6,57 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.dog.dto.user.UserDto" %>
+<%@ page import="com.dog.util.CommonStatis" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-    request.setAttribute("basePath",basePath);
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    request.setAttribute("basePath", basePath);
+    UserDto userDto = (UserDto) request.getSession().getAttribute(CommonStatis.Login_user);
 %>
-<base href="${basePath}" />
-<jsp:include page="${basePath}/comm/header.jsp"></jsp:include>
+<base href="${basePath}"/>
+<jsp:include page="/comm/header.jsp"></jsp:include>
 <html>
 <head>
     <title>MAIN JSP</title>
-    <script src="${basePath}js/interTest.js"></script>
+    <script src="/js/interTest.js"></script>
     <script>
-        var str ='2017-5-01';
-        var date = new Date(str );
-        document.write(date);
+        function rsetTest(uid) {
+            var con = document.getElementById("COMMON");
+            var per = document.getElementById("PERSON");
+            /* 建立连接，conn 即web.xml中 CometServlet的&lt;url-pattern>*/
+            JS.Engine.start('conn');
+            // 监听后台某个频道
+            JS.Engine.on(
+                    {
+                        // 对应服务端 公共频道
+                        COMMON: function (message) {
+                            con.innerHTML = "这里是公共频道" + message;
+                        },
+                        // 对应服务端 公共频道
+                        ABC: function (message) {
+                            per.innerHTML = "这里是私人频道" + message;
+                        },
+                    }
+            )
+        }
     </script>
 </head>
-<body>
+<body onload="rsetTest('<%=userDto.getLogin()%>');">
 this is main jsp
-<h6>接口测试</h6>
+<h6>rest接口测试</h6>
+<h6>聊天测试</h6>
+<ul>
+    <li><%=userDto.getLogin()%>
+    </li>
+</ul>
+<form action="/comet/chart" method="post">
+    <input type="text" name="uid" value="">用户名<br>
+    <input type="text" name="message" value="">消息<br>
+    <button type="submit" value="chart">chart</button>
+</form>
+公共：<span id="COMMON">...</span><br>
+私人：<span id="PERSON">...</span><br>
+
 </body>
 </html>

@@ -12,9 +12,9 @@ import javax.servlet.ServletContextListener;
 public class Comet4j implements ServletContextListener {
 
     // 频道1
-    private static final String CHANNEL1 = "result1";
+    private static final String CHANNEL1 = "COMMON";//公共频道
     // 频道2
-    private static final String CHANNEL2 = "result2";
+    private static final String CHANNEL2 = "PERSON";
 
     // 通过频道1推送给前台的变量1
     private static int number1 = 0;

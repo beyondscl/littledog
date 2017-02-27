@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class UserDto extends ExtalBean implements Serializable, Cloneable {
     private String id;
     private String login;
+    private String password;
     private String trueName;
     private String loginName;
     private String ukey;
@@ -79,5 +80,13 @@ public class UserDto extends ExtalBean implements Serializable, Cloneable {
 
     public void setPrimaryKey(String primaryKey) {
         this.primaryKey = primaryKey;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
