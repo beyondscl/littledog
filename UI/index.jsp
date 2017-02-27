@@ -1,13 +1,19 @@
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
-  Date: 2017/2/10
-  Time: 10:19
+  Date: 2017/2/23
+  Time: 10:32
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="WEB-INF/comm/header.jsp"></jsp:include>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    request.setAttribute("basePath",basePath);
+%>
+<base href="${basePath}" />
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="comm/header.jsp"/>
 <html>
 <head>
     <title>你好，请登录</title>
