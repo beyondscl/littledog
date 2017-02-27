@@ -19,7 +19,7 @@ public class CometChart {
 
     @RequestMapping("/chart")
     public ModelAndView chart(HttpServletRequest request, HttpServletResponse response, @ModelAttribute MessageDto messageDto) throws Exception {
-        CometUtil.sendToPerson(request, response, messageDto.getUid(), messageDto.getMessage());
+        Comet4j.sendToPerson(messageDto);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject(SessionUtil.getSession(request).getAttribute(CommonStatis.Login_user));
         modelAndView.setViewName("main");

@@ -26,6 +26,7 @@
     <!--
     添加数据推送comet4j
     -->
+    <!--定义一个来实现推送-->
     <listener>
         <listener-class>org.comet4j.core.CometAppListener</listener-class>
     </listener>

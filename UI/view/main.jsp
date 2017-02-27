@@ -21,7 +21,7 @@
     <title>MAIN JSP</title>
     <script src="/js/interTest.js"></script>
     <script>
-        function rsetTest(uid) {
+        function rsetTest() {
             var con = document.getElementById("COMMON");
             var per = document.getElementById("PERSON");
             /* 建立连接，conn 即web.xml中 CometServlet的&lt;url-pattern>*/
@@ -34,7 +34,7 @@
                             con.innerHTML = "这里是公共频道" + message;
                         },
                         // 对应服务端 公共频道
-                        ABC: function (message) {
+                        PERSONAL: function (message) {
                             per.innerHTML = "这里是私人频道" + message;
                         },
                     }
@@ -42,12 +42,12 @@
         }
     </script>
 </head>
-<body onload="rsetTest('<%=userDto.getLogin()%>');">
+<body onload="rsetTest();">
 this is main jsp
 <h6>rest接口测试</h6>
 <h6>聊天测试</h6>
 <ul>
-    <li><%=userDto.getLogin()%>
+    <li>当前用户<%=userDto.getLogin()%>
     </li>
 </ul>
 <form action="/comet/chart" method="post">

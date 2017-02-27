@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/2/14.
@@ -18,7 +19,7 @@ public class SessionUtil {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
-    public static Object getAttribute() {
+    public static Object getAttribute(String login_user) {
         return null;
     }
 
@@ -47,6 +48,7 @@ public class SessionUtil {
      */
     public static void setUser(HttpServletRequest request, UserDto userDto) {
         Assert.notNull(userDto);
+        userDto.setId(UUID.randomUUID().toString());
         getSession(request).setAttribute(CommonStatis.Login_user, userDto);
         userList.add(userDto);//但是不知道用户什么时候过期
     }
