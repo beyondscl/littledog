@@ -1,9 +1,5 @@
 package com.dog.comet.event;
 
-/**
- * Created by Administrator on 2017/2/27.
- */
-
 import java.util.List;
 import java.util.Map;
 

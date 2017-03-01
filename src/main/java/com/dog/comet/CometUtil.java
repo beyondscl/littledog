@@ -19,9 +19,9 @@ import java.util.Map;
  */
 public class CometUtil extends ConnectListener implements ServletContextListener {
     private static CometContext cc = CometContext.getInstance();
-    private static CometEngine engine = cc.getInstance().getEngine();
+    private static CometEngine engine = CometContext.getInstance().getEngine();
     private static String PERSONAL = "PERSONAL";
-    private static Map<String, ConnectEvent> map = new HashMap<String, ConnectEvent>();
+    private static final Map<String, ConnectEvent> map = new HashMap<String, ConnectEvent>();
 
     public static boolean sendToPerson(MessageDto messageDto) {
         ConnectEvent connectEvent = map.get(messageDto.getUid());
@@ -48,6 +48,7 @@ public class CometUtil extends ConnectListener implements ServletContextListener
             map.put(uid, connectEvent);
             //userid 和 connid绑定在一起，用engine去获取用户特定的connecttion实现特定用户的推送消息
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }

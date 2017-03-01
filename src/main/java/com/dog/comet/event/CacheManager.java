@@ -113,10 +113,6 @@ public class CacheManager {
         long milisExpire = cache.getTimeOut();
         if (milisExpire < 0) {                // Cache never expires
             return false;
-        } else if (milisNow >= milisExpire) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return milisNow >= milisExpire;
     }
 }

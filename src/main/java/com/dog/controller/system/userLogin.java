@@ -30,8 +30,8 @@ public class userLogin {
         Assert.notNull(userDto.getLogin());
         SessionUtil.setUser(request, userDto);
         logger.info(userDto.getLogin() + "登录了");
-//        logger.info(userService.queryTest().get(0));
-//        logger.info(userService.queryTestForHbm());
+        logger.info(userService.queryTest().get(0));
+        logger.info(userService.queryTestForHbm());
 //        logger.info(userService.insertTest());
         return "main";
     }

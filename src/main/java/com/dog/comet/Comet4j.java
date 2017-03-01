@@ -3,6 +3,8 @@ package com.dog.comet;
 import com.dog.controller.system.SessionUtil;
 import com.dog.dto.user.UserDto;
 import com.dog.util.CommonStatis;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
 import org.comet4j.core.event.ConnectEvent;
@@ -18,6 +20,7 @@ import java.util.Map;
  * Created by Administrator on 2017/2/23.
  */
 public class Comet4j extends ConnectListener implements ServletContextListener {
+    protected final Log logger = LogFactory.getLog(Comet4j.class);
 
     // 频道1
     private static final String CHANNEL1 = "COMMON";//公共频道
@@ -71,6 +74,8 @@ public class Comet4j extends ConnectListener implements ServletContextListener {
             map.put(uid, connectEvent);
             //userid 和 connid绑定在一起，用engine去获取用户特定的connecttion实现特定用户的推送消息
         } catch (Exception e) {
+            logger.warn("项目启动请忽略该错误"+e);
+            e.printStackTrace();
         }
         return true;
     }
@@ -78,7 +83,7 @@ public class Comet4j extends ConnectListener implements ServletContextListener {
     /**
      * 内部类线程类
      */
-    class SendToClientThread implements Runnable {
+    private class SendToClientThread implements Runnable {
         public void run() {
             while (true) {
                 try {

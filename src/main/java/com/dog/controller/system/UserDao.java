@@ -1,9 +1,6 @@
 package com.dog.controller.system;
 
 import com.dog.base.db.jdbc.dao.BaseJdbcTemplet;
-import com.dog.dto.user.UserDto;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 /**

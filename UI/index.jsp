@@ -43,8 +43,14 @@
 数字1：<span id="number1">...</span><br>
 数字2：<span id="number2">...</span>
 <form action="user/login" method="post">
-    <input type="text"     name="login" value="">用户名<br>
-    <input type="password" name="password" value="">密码<br>
+    <label>
+        <input type="text" name="login" value="">
+        用户名
+    </label><br>
+    <label>
+        <input type="password" name="password" value="">
+        密码
+    </label><br>
     <button type="submit" value="login">login</button>
 </form>
 </body>

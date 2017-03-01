@@ -18,8 +18,8 @@
     <title>抱歉，出错了</title>
 </head>
 <body>
-<center>
+<div style="text-align: center;">
     <h3>我的天，服务器心情不好出错啦!</h3>
-</center>
+</div>
 </body>
 </html>

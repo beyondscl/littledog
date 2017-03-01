@@ -24,7 +24,7 @@ public class BaseJdbcTemplet {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public JdbcTemplate getJdbcTemplate() {
+    protected JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
 
@@ -46,8 +46,7 @@ public class BaseJdbcTemplet {
      * @return
      */
     public Session getSession(){
-        Session session = this.getSessionFactory().getCurrentSession();
-        return session;
+        return this.getSessionFactory().getCurrentSession();
     }
     /**
      * 保存一个对象
@@ -55,8 +54,7 @@ public class BaseJdbcTemplet {
      * @return
      */
     public Serializable save(Object object){
-        Serializable s =  this.getSessionFactory().getCurrentSession().save(object);
-        return s;
+        return this.getSessionFactory().getCurrentSession().save(object);
     }
     /**
      * 保存更新或者保存一个对象，并强制更新数据库
@@ -64,7 +62,6 @@ public class BaseJdbcTemplet {
      * @return
      */
     public Object merge(Object object){
-        Object s =  this.getSessionFactory().getCurrentSession().merge(object);
-        return s;
+        return this.getSessionFactory().getCurrentSession().merge(object);
     }
 }

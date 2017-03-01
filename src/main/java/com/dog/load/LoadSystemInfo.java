@@ -1,15 +1,12 @@
 package com.dog.load;
 
-import com.dog.dto.user.UserDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/2/22.

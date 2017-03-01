@@ -19,7 +19,7 @@
 <html>
 <head>
     <title>MAIN JSP</title>
-    <script src="/js/interTest.js"></script>
+    <script src="${pageContext.request.contextPath}/js/interTest.js"></script>
     <script>
         function rsetTest() {
             var con = document.getElementById("COMMON");
@@ -50,9 +50,15 @@ this is main jsp
     <li>当前用户<%=userDto.getLogin()%>
     </li>
 </ul>
-<form action="/comet/chart" method="post">
-    <input type="text" name="uid" value="">用户名<br>
-    <input type="text" name="message" value="">消息<br>
+<form action="${pageContext.request.contextPath}/comet/chart" method="post">
+    <label>
+        <input type="text" name="uid" value="">
+        用户名
+    </label><br>
+    <label>
+        <input type="text" name="message" value="">
+        消息
+    </label><br>
     <button type="submit" value="chart">chart</button>
 </form>
 公共：<span id="COMMON">...</span><br>
