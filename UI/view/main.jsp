@@ -63,6 +63,5 @@ this is main jsp
 </form>
 公共：<span id="COMMON">...</span><br>
 私人：<span id="PERSON">...</span><br>
-
 </body>
 </html>
